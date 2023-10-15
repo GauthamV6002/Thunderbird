@@ -1,4 +1,5 @@
-
+#ifndef __CATA_INTAKE
+#define __CATA_INTAKE
 
 #include "../../PID/PID.hpp"
 
@@ -30,9 +31,11 @@ namespace thunderbird {
         void charge();
         void fire();
 
+        void intakeFully(int timeout = 2000);
+
         void spinCatapult(int power);
         void intakeForward(int power);
-
-
     };
 }
+
+#endif

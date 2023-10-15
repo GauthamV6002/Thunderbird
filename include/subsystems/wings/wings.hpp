@@ -1,3 +1,6 @@
+#ifndef __WINGS
+#define __WINGS
+
 namespace thunderbird {
     class Wings {
 
@@ -7,5 +10,13 @@ namespace thunderbird {
         void openWings();
         void closeWings();
         void runWings();
+
+        void openLeft();
+        void openRight();
+
+        void closeLeft();
+        void closeRight();
     };
 }
+
+#endif

@@ -36,4 +36,9 @@ namespace thunderbird {
     pros::Rotation catapultRotationSensor (2);
     pros::ADIDigitalIn cataLimitSwitch ('H');
     pros::Optical kickerPlatformOptical (12);
+
+    // TODO - give ports
+    pros::Distance backSideDistanceSensor(19);
+    pros::Distance intakeChecker(1);
+
 }

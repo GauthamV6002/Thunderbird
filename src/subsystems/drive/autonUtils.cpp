@@ -54,6 +54,27 @@ void thunderbird::Drive::turnToAngleAbsolute(double targetAngle) {
 
 }
 
+void thunderbird::Drive::swingToAngleRelative(double targetAngle, double radius) {
+
+    float targetPosition = getAvgIMURotation() + targetAngle;
+
+    while(!(this->swingPID.isSettled())) {
+        float error = targetPosition - this->getAvgIMURotation();
+        float power = this->swingPID.compute(error);
+
+        if(targetAngle > 0) thunderbird::leftMotors = power;
+        else thunderbird::rightMotors = power;
+        pros::delay(10);
+		pros::screen::print(TEXT_MEDIUM, 3, "Error:  %f   |   Power: %f", error, power);
+    }
+
+    pros::screen::print(TEXT_MEDIUM, 5, "settled!");
+
+    thunderbird::driveMotors.brake();
+    this->swingPID.resetSystem();
+
+}
+
 void thunderbird::Drive::translateRelative(double xTranslation, double yTranslation) {
     double turnAngle = (-1 * atan2(yTranslation, xTranslation) * 57.2958) + 90;
     double lateralDist = sqrt(yTranslation*yTranslation + xTranslation*xTranslation);
@@ -61,8 +82,3 @@ void thunderbird::Drive::translateRelative(double xTranslation, double yTranslat
     this->turnToAngleRelative(turnAngle);
     this->moveLateral(lateralDist);
 }
-
-void thunderbird::Drive::outtakeAndDeposit(int power, int time) {
-    thunderbird::driveMotors = power;
-    pros::delay(time);
-    this->moveLateral(-12);

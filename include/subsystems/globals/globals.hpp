@@ -1,3 +1,6 @@
+#ifndef __GLOBALS
+#define __GLOBALS
+
 #include "api.h"
 
 namespace thunderbird {
@@ -33,7 +36,12 @@ namespace thunderbird {
     // Sensors
     extern pros::Imu IMU1;
     extern pros::Imu IMU2;
+
     extern pros::Rotation catapultRotationSensor;
-    extern pros::ADIDigitalIn cataLimitSwitch;
     extern pros::Optical kickerPlatformOptical;
+
+    extern pros::Distance backSideDistanceSensor;
+    extern pros::Distance intakeChecker;
 }
+
+#endif

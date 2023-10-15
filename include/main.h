@@ -50,6 +50,9 @@
 #include "subsystems/catapultAndIntake/catapultAndIntake.hpp"
 #include "subsystems/elevation/elevation.hpp"
 
+// Auton
+#include "autonomous/autonomous.hpp"
+
 // Libraries
 // #include "PID/PID.hpp" dont use; do independent imports!
 

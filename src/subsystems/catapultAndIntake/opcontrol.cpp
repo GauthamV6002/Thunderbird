@@ -9,7 +9,7 @@ void thunderbird::CatapultAndIntake::runCatapultAndIntake() {
     // Break the cycle
     // TODO: Ensure you don't get locked into one mode
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
-        this->cycleState = (this->cycleState == 0) ? 2 : 0; // Manual Action
+        this->cycleState = (this->cycleState == 0) ? 2 : 0; // Automatic Reload
     } else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
         this->cycleState = (this->cycleState == 0) ? 1 : 0; // Match Load Routine
     }
@@ -67,12 +67,15 @@ void thunderbird::CatapultAndIntake::runMatchLoadRoutine() {
 }
 
 void thunderbird::CatapultAndIntake::runManualAction() {
-    int power = 80;
 
-    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+    const int power = 127;
+
+    if(!master.get_digital(pros::E_CONTROLLER_DIGITAL_R2) && !master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
         thunderbird::catapultAndIntakeMotors.brake();  
     } else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
         this->spinCatapult(power);
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        this->intakeForward(power);
     }
 }
 

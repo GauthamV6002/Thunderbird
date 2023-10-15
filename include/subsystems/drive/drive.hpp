@@ -1,8 +1,7 @@
-#include "../../PID/PID.hpp"
-
 #ifndef __DRIVE
 #define __DRIVE
 
+#include "../../PID/PID.hpp"
 namespace thunderbird {
     class Drive { // Class Template for 6m Drive
         public:
@@ -19,8 +18,11 @@ namespace thunderbird {
             // 0.86 of P only = accurate
             // 0.825, 0, 4.75
             // 0.70 works nice
-            // TODO: Increase timeout for larger calcs
-            PID::PID_System turnPID = PID::PID_System(0, 2.5, 0.0, 17.5, 100, 5, 600, 5000);
+            // TODO: Increase timeout for larger calcs : changed minSettleTime from 600->400
+            PID::PID_System turnPID = PID::PID_System(0, 2.5, 0.0, 17.5, 100, 5, 400, 2000);
+
+
+            PID::PID_System swingPID = PID::PID_System(0, 2.5, 0.0, 17.5, 100, 5, 600, 8000);
 
             // Driver control tank function
             void tank();
@@ -39,29 +41,16 @@ namespace thunderbird {
             void circleToSquare(double u, double v, double& x, double& y);
             void reverseFront();
 
-
-            // Auton Macro Functions
-            void outtakeAndDeposit(int power = 80, int time = 750);
-
             // For Auton PID
             void moveLateral(double dist); // In inches
             void turnToAngleRelative(double targetAngle); // In degrees CW = +ve
             void turnToAngleAbsolute(double targetAngle); // In degrees; CW = +ve
 
+            void swingToAngleRelative(double targetAngle, double radius);
+
             void translateRelative(double xTranslation, double yTranslation);
 
             // TODO: Set up bang-bang control in case something goes wrong
-
-            // Calibrate Functions
-            void plannerCalibration();
-            void turnPIDCalibration();
-            void drivePIDCalibration();
-
-            // Actual Autons
-            void goalSideAWP();
-            void goalSideElims();
-
-            void shootSideAWP();
     };
 }
 

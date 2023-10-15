@@ -1,12 +1,14 @@
 #include "main.h"
 
-// Object Initializations
+// Subsystems
 thunderbird::Drive _drive = thunderbird::Drive(); //_name convention to represent objects
 thunderbird::CatapultAndIntake _catapultAndIntake = thunderbird::CatapultAndIntake();
 thunderbird::Wings _wings = thunderbird::Wings();
 thunderbird::Elevation _elevation = thunderbird::Elevation();
-
 thunderbird::Blocker _blocker = thunderbird::Blocker();
+
+// Autonomous System
+thunderbird::Auton autons = thunderbird::Auton(_drive, _catapultAndIntake, _wings, _elevation);
 
 void disabled() {}
 
@@ -22,6 +24,10 @@ void initialize() {
 	thunderbird::IMU2.reset(false);
 
 	pros::delay(2000);
+
+	// Configs
+	_catapultAndIntake.setCatapultAndIntakeConfig();
+	thunderbird::driveMotors.tare_position();
 }
 
 void autonomous() {
@@ -31,9 +37,7 @@ void autonomous() {
 
 	pros::delay(2000);
 
-	
-
-
+	autons.goalSideElims();
 }
 
 
@@ -56,12 +60,6 @@ void opcontrol() {
 	
 	*/
 
-
-	// Configs
-	_catapultAndIntake.setCatapultAndIntakeConfig();
-	thunderbird::driveMotors.tare_position();
-
-
     while(true) {
 
         // Main loop functions
@@ -76,8 +74,8 @@ void opcontrol() {
 
 		// pros::screen::print(TEXT_MEDIUM, 2, "avg encoder value:  %f", _drive.getAvgEncoderValue(3, 10));
 
-		pros::screen::print(TEXT_MEDIUM, 9, "IMU1: %f | IMU2: %f", thunderbird::IMU1.get_rotation(), thunderbird::IMU2.get_rotation()); 
-		pros::screen::print(TEXT_MEDIUM, 10, "avg IMU: %f", _drive.getAvgIMURotation()); 
+		// pros::screen::print(TEXT_MEDIUM, 9, "IMU1: %f | IMU2: %f", thunderbird::IMU1.get_rotation(), thunderbird::IMU2.get_rotation()); 
+		// pros::screen::print(TEXT_MEDIUM, 10, "avg IMU: %f", _drive.getAvgIMURotation()); 
 
         pros::delay(10);
     }

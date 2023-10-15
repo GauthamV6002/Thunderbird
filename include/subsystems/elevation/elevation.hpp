@@ -1,3 +1,6 @@
+#ifndef __ELEVATION
+#define __ELEVATION
+
 namespace thunderbird {
     class Elevation {
         public:
@@ -7,3 +10,5 @@ namespace thunderbird {
         void runElevation();
     };
 }
+
+#endif

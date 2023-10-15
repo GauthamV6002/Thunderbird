@@ -1,3 +1,6 @@
+#ifndef __BLOCKER
+#define __BLOCKER
+
 namespace thunderbird {
     class Blocker {
         public:
@@ -9,3 +12,5 @@ namespace thunderbird {
         void runBlocker();
     };
 }
+
+#endif
