@@ -12,12 +12,20 @@ void thunderbird::CatapultAndIntake::intakeForward(int power) {
 
 // TODO: Fix this to make it non-blocking?
 void thunderbird::CatapultAndIntake::charge() {
-        float error = this->STORAGE_ANGLE - thunderbird::catapultRotationSensor.get_position();
-        float power = catapultPID.compute(error);
 
-        // Only spin the cata if power is more than 0
-        if(power < 10) thunderbird::catapultAndIntakeMotors.brake();
-        else this->spinCatapult(power);
+    float power = 0;
+
+    while(power < 10) {
+
+        float error = this->STORAGE_ANGLE - thunderbird::catapultRotationSensor.get_position();
+        power = catapultPID.compute(error);
+
+        pros::delay(10);
+        this->spinCatapult(power);
+    }
+
+    thunderbird::catapultAndIntakeMotors.brake();
+
 }
 
 //TODO: Fix..?
@@ -35,4 +43,14 @@ void thunderbird::CatapultAndIntake::intakeFully(int timeout) {
     }
 
     thunderbird::catapultAndIntakeMotors.brake();
+}
+
+// Auton Remover
+
+void thunderbird::CatapultAndIntake::expandAutonRemover() {
+    thunderbird::autonRemover.set_value(HIGH);
+}
+
+void thunderbird::CatapultAndIntake::retractAutonRemover() {
+    thunderbird::autonRemover.set_value(LOW);    
 }

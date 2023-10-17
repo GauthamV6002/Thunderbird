@@ -1,5 +1,6 @@
 // #include "../../../include/PID/PID.hpp"
 #include "main.h"
+#include "pros/misc.h"
 #include "pros/motors.h"
 
 
@@ -20,6 +21,10 @@ void thunderbird::CatapultAndIntake::runCatapultAndIntake() {
         this->runMatchLoadRoutine();
     } else {
         this->runManualAction();
+    }
+
+    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+        expandAutonRemover();
     }
 
     //TODO: Add Power detection to figure out whether the motor is overexerting, as such stop it

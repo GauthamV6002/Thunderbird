@@ -7,7 +7,7 @@
 void thunderbird::Drive::checkInversion() {
     // Check inversion control
 	if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) && !master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-		this->inverted = !this->inverted; 
+		this->inverted = !this->inverted;
 	}
 }
 
@@ -38,7 +38,6 @@ void thunderbird::Drive::circleToSquare(double u, double v, double& x, double& y
 }
 
 float thunderbird::Drive::getAvgEncoderValue(int numIterations, int delayBetweenIterations) {
-    // TODO: Make sure the directions don't end up doing something weird
     
     float sum = 0;
 
@@ -61,8 +60,6 @@ float thunderbird::Drive::getAvgIMURotation(int numIterations, int delayBetweenI
         sum += thunderbird::IMU1.get_rotation() + thunderbird::IMU2.get_rotation();
         pros::delay(delayBetweenIterations);
     }
-
-    // TODO: ensure the encoders bloody work omfl
 
     return sum / (2*numIterations);
 }

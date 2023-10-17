@@ -29,9 +29,9 @@ namespace thunderbird {
     extern pros::ADIDigitalOut rightWing;
     extern pros::ADIDigitalOut leftWing;
     extern pros::ADIDigitalOut elevationRelease;
+    extern pros::ADIDigitalOut autonRemover;
 
     extern pros::ADIDigitalOut blocker;
-    extern pros::ADIDigitalOut intakeLift;
 
     // Sensors
     extern pros::Imu IMU1;

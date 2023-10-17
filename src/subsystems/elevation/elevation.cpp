@@ -10,7 +10,7 @@ void thunderbird::Elevation::retractElevationPiston() {
 }
 
 void thunderbird::Elevation::runElevation() {
-    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
         releaseElevationMechanism();
     }
 }

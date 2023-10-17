@@ -32,12 +32,12 @@ void initialize() {
 
 void autonomous() {
 
-	thunderbird::IMU1.reset(false);
-	thunderbird::IMU2.reset(false);
+	// thunderbird::IMU1.reset(false);
+	// thunderbird::IMU2.reset(false);
 
-	pros::delay(2000);
+	// pros::delay(2000);
 
-	autons.goalSideElims();
+	autons.shootSideSafe();
 }
 
 
@@ -53,10 +53,11 @@ void opcontrol() {
 		L2: Toggle Intake Lift
 
 		D_PAD X: Switch to Match Load Routine for Cata
-		D_PAD DOWN: Switch to Manual Action for Cata
+		D_PAD DOWN: Switch to Automatic Action for Cata
 
 		D_PAD B: Release Elevation Mech
 		D_PAD A: Toggle Blocker
+		D_PAD Y: Toggle Auton Remover
 	
 	*/
 

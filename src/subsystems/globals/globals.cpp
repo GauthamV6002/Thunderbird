@@ -26,19 +26,19 @@ namespace thunderbird {
     pros::ADIDigitalOut rightWing ('A', LOW);
     pros::ADIDigitalOut leftWing ('G', LOW);
     pros::ADIDigitalOut elevationRelease ('B', LOW);
+    pros::ADIDigitalOut autonRemover ('C', LOW);
 
-    pros::ADIDigitalOut intakeLift ('C', LOW);
     pros::ADIDigitalOut blocker ('D', LOW);
  
     //Sensors
-    pros::Imu IMU1 (20);
+    pros::Imu IMU1 (19);
     pros::Imu IMU2 (11);
     pros::Rotation catapultRotationSensor (2);
     pros::ADIDigitalIn cataLimitSwitch ('H');
     pros::Optical kickerPlatformOptical (12);
 
     // TODO - give ports
-    pros::Distance backSideDistanceSensor(19);
+    // pros::Distance backSideDistanceSensor(19);
     pros::Distance intakeChecker(1);
 
 }

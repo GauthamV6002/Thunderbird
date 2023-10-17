@@ -31,6 +31,10 @@ namespace thunderbird {
         void charge();
         void fire();
 
+        // Auton Remover
+        void expandAutonRemover();
+        void retractAutonRemover();
+
         void intakeFully(int timeout = 2000);
 
         void spinCatapult(int power);

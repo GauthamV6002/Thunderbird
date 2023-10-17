@@ -27,8 +27,6 @@ void thunderbird::Drive::moveLateral(double dist) {
 
 }
 
-// TODO: Ensure PID system is reset after each movement
-
 void thunderbird::Drive::turnToAngleRelative(double targetAngle) {
 
     float targetPosition = getAvgIMURotation() + targetAngle;

@@ -28,13 +28,14 @@ namespace thunderbird {
         void goalSideElims();
 
         void shootSideAWP();
+        void shootSideSafe();
         void shootSideElims();
 
         // Skills
         void skillsRoutine();
 
         // Utils & Macros
-        void outtakeAndDeposit(int power = 80, int moveDelay = 200, int time = 750, int distBack = 12);
+        void outtakeAndDeposit(int power = 80, int moveDelay = 200, int time = 500, int distBack = 12);
     };
 }
 
