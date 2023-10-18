@@ -9,3 +9,9 @@ void thunderbird::Auton::outtakeAndDeposit(int power, int moveDelay, int time, i
     this->_drive.moveLateral(-distBack);
     this->_catapultAndIntake.intakeForward(0);
 }
+
+void thunderbird::Auton::ramAndGoBack(int power, int time, int distBack) {
+    thunderbird::driveMotors = power;
+    pros::delay(time);
+    this->_drive.moveLateral(-distBack);
+}

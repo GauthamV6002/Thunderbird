@@ -36,6 +36,7 @@ namespace thunderbird {
 
         // Utils & Macros
         void outtakeAndDeposit(int power = 80, int moveDelay = 200, int time = 500, int distBack = 12);
+        void ramAndGoBack(int power = 80, int time = 500, int distBack = 12);
     };
 }
 

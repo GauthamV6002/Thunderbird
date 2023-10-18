@@ -91,17 +91,48 @@ void thunderbird::Auton::shootSideSafe() {
     this->_catapultAndIntake.spinCatapult(127);
     pros::delay(700);
     this->_catapultAndIntake.spinCatapult(0);
-    this->_catapultAndIntake.intakeForward(127);
-    pros::delay(400);
+    pros::delay(500);
 
 
-    // SECTION - remove triball from matchload
-    // this->_catapultAndIntake.expandAutonRemover();
-    this->_drive.moveLateral(1);
-    this->_drive.turnToAngleRelative(70);
-    this->_drive.moveLateral(-10);
-    this->_drive.turnToAngleRelative(90);
-    // this->_catapultAndIntake.retractAutonRemover();
+    // SECTION - deposit alliance triball
+    // this->_drive.moveLateral(20.00); // Move into push position
+    // this->_drive.turnToAngleRelative(55.00); // Turn towards goal
+
+    thunderbird::leftMotors = 60;
+    thunderbird::rightMotors = 30;
+    pros::delay(1800);
+    
+    // Ram twice
+    this->ramAndGoBack(80, 750, 10);
+    // this->ramAndGoBack(100, 750, 17);
+
+    // SECTION - Get matchload & intake it
+    this->_catapultAndIntake.expandAutonRemover();
+    this->_drive.moveLateral(-5); // Move into push position
+    // TODO: Make timeout for bang-bang control
+    this->_drive.turnToAngleRelativeBangBang(110.00, 60); // Take out matchload by turning
+    this->_drive.turnToAngleRelativeBangBang(-20.00, 40); // Take out matchload by turning
+
+    // Intake matchload by going fwd
+    this->_catapultAndIntake.intakeForward(127); // start intake
+    this->_drive.moveLateral(-8); // Move into push position
+    pros::delay(2500);
+
+    // SECTION - Move outwards and towards elevation bar
+    this->_drive.moveLateral(21.00);
+
+    this->_catapultAndIntake.retractAutonRemover();
+    this->_drive.turnToAngleRelative(130.00);
+    this->_drive.moveLateral(-24.00);
+
+    // SECTION - outake & touch elevation bar
+    this->_catapultAndIntake.intakeForward(-127);
+    pros::delay(800);
+    this->_drive.turnToAngleRelative(-10);
+
+    this->_drive.moveLateral(-33);
+
+
 
 
 }

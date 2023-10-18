@@ -9,7 +9,7 @@ namespace thunderbird {
 
         PID::PID_System catapultPID = PID::PID_System(0, 0.1, 0.2, 0, 0, 10 * 100, 500, 4000);
 
-        const double STORAGE_ANGLE = 65 * 100, MATCH_ANGLE = 40 * 100; 
+        const double STORAGE_ANGLE = 62 * 100, MATCH_ANGLE = 40 * 100; 
         int cycleState = 0; // 0 is normal, 1 is matchload, 2 is manual action
 
         bool triballIntaked = false;
@@ -29,6 +29,7 @@ namespace thunderbird {
 
         // Util Functions
         void charge();
+        void chargeSync();
         void fire();
 
         // Auton Remover

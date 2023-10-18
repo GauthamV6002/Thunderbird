@@ -13,13 +13,13 @@ namespace thunderbird {
             // Drive & Turn PID
             // 0.2, 0.012, 0.7, 250 = accurate w/ integral
             // 0.2, 0.0, 1.425, 250 = best
-            PID::PID_System drivePID = PID::PID_System(0, 0.2, 0.0, 1.425, 250, 50, 300, 40000);
+            PID::PID_System drivePID = PID::PID_System(0, 0.2, 0.0, 1.425, 250, 50, 300, 5000);
 
             // 0.86 of P only = accurate
             // 0.825, 0, 4.75
             // 0.70 works nice
             // TODO: Increase timeout for larger calcs : changed minSettleTime from 600->400
-            PID::PID_System turnPID = PID::PID_System(0, 2.5, 0.0, 17.5, 100, 5, 400, 2000);
+            PID::PID_System turnPID = PID::PID_System(0, 3.0, 0.0, 17.5, 100, 5, 400, 2000);
 
 
             PID::PID_System swingPID = PID::PID_System(0, 2.5, 0.0, 17.5, 100, 5, 600, 8000);
@@ -51,6 +51,10 @@ namespace thunderbird {
             void translateRelative(double xTranslation, double yTranslation);
 
             // TODO: Set up bang-bang control in case something goes wrong
+            void moveLateralBangBang(double dist, double speed, double threshold = 50, double timeout = 6000);
+            
+            void turnToAngleRelativeBangBang(double targetAngle, double speed, double threshold = 5, double timeout = 4000);
+            void swingToAngleRelativeBangBang(double targetAngle, double speed, double threshold = 5, double timeout = 4000);
     };
 }
 

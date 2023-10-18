@@ -32,12 +32,13 @@ void initialize() {
 
 void autonomous() {
 
-	// thunderbird::IMU1.reset(false);
-	// thunderbird::IMU2.reset(false);
+	_drive.turnPID.setkConstants(3.0, 0.0, 17.5, 100);
 
-	// pros::delay(2000);
-
-	autons.shootSideSafe();
+	// _drive.turnToAngleRelativeBangBang(60, 40, 10);
+	// autons.goalSideAWP();
+	// autons.shootSideSafe();
+	autons.skillsRoutine();
+	// autons.turnPIDCalibration();
 }
 
 

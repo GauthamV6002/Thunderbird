@@ -23,9 +23,11 @@ void thunderbird::CatapultAndIntake::runCatapultAndIntake() {
         this->runManualAction();
     }
 
-    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-        expandAutonRemover();
-    }
+    pros::screen::print(TEXT_MEDIUM, 7, "this->cycleState: %d", this->cycleState); 
+
+    // if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+    //     expandAutonRemover();
+    // }
 
     //TODO: Add Power detection to figure out whether the motor is overexerting, as such stop it
 }
@@ -59,14 +61,17 @@ void thunderbird::CatapultAndIntake::runAutomaticReload() {
 }
 
 void thunderbird::CatapultAndIntake::runMatchLoadRoutine() {
+
+    thunderbird::catapultAndIntakeMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
     
+    pros::screen::print(TEXT_MEDIUM, 3, "matchload"); 
     const int matchLoadSpeed = 100, sensorThreshold = 240;
     int sensorProximity = thunderbird::kickerPlatformOptical.get_proximity();
 
     if(sensorProximity > sensorThreshold) {
         this->spinCatapult(127);
     } else {
-        this->charge();
+        this->chargeSync();
     }
         
 }

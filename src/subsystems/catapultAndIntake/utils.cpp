@@ -28,6 +28,15 @@ void thunderbird::CatapultAndIntake::charge() {
 
 }
 
+void thunderbird::CatapultAndIntake::chargeSync() {
+
+    float error = this->STORAGE_ANGLE - thunderbird::catapultRotationSensor.get_position();
+    float power = catapultPID.compute(error);
+    this->spinCatapult(power);
+
+}
+
+
 //TODO: Fix..?
 void thunderbird::CatapultAndIntake::fire() {
     thunderbird::catapultAndIntakeMotors = 127;
