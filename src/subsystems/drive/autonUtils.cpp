@@ -56,6 +56,20 @@ void thunderbird::Drive::turnToAngleRelative(double targetAngle) {
 
 void thunderbird::Drive::turnToAngleAbsolute(double targetAngle) {
 
+    while(!(this->turnPID.isSettled())) {
+        float error = targetAngle - this->getAvgIMURotation();
+        float power = this->turnPID.compute(error);
+
+        thunderbird::leftMotors = power;
+        thunderbird::rightMotors = -power;
+        pros::delay(10);
+		pros::screen::print(TEXT_MEDIUM, 3, "Error:  %f   |   Power: %f", error, power);
+    }
+
+    pros::screen::print(TEXT_MEDIUM, 5, "settled!");
+
+    thunderbird::driveMotors.brake();
+    this->turnPID.resetSystem();
 }
 
 // !SECTION - SWING PID
@@ -92,7 +106,7 @@ void thunderbird::Drive::moveLateralBangBang(double dist, double speed, double t
     while(error > threshold && timeSpentRunning <= timeout) {
         error = targetPosition - this->getAvgEncoderValue();
         thunderbird::driveMotors = (error > 0) ? speed : -speed;
-        
+
         pros::delay(10);
         timeSpentRunning += 10;
     }
