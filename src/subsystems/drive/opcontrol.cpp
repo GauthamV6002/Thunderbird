@@ -70,5 +70,6 @@ void thunderbird::Drive::arcade(bool invertTurning) {
 	thunderbird::backRight = analogLeftY - analogRightX;
 
 	// Check inversion control
-	this->checkInversion();
+	// this->checkInversion();
+	// lol no inversion haha boo
 }

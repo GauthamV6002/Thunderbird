@@ -7,16 +7,21 @@
 #include "subsystems/blocker/blocker.hpp"
 #include "subsystems/catapultAndIntake/catapultAndIntake.hpp"
 #include "subsystems/elevation/elevation.hpp"
+#include "subsystems/flywheel/flywheel.hpp"
+#include "subsystems/intake/intake.hpp"
 
 namespace thunderbird {
     class Auton {
         public:
         Drive _drive;
-        CatapultAndIntake _catapultAndIntake;
+        // CatapultAndIntake _catapultAndIntake;
+        Flywheel _flywheel;
+        Intake _intake;
         Wings _wings;
         Elevation _elevation;
+        Blocker _blocker;
 
-        Auton(Drive _drive, CatapultAndIntake _catapultAndIntake, Wings _wings, Elevation _elevation);
+        Auton(Drive _drive, Flywheel _flywheel, Intake _intake, Wings _wings, Elevation _elevation, Blocker _blocker);
 
         // Calibration Functions
         void plannerCalibration();
@@ -25,9 +30,11 @@ namespace thunderbird {
 
         // Actual Autons
         void goalSideAWP();
+        void goalSideSafe();
         void goalSideElims();
 
         void shootSideAWP();
+        void shootSideAWPOnly();
         void shootSideSafe();
         void shootSideElims();
 

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
 
 
 // Main loop function
@@ -24,10 +25,6 @@ void thunderbird::CatapultAndIntake::runCatapultAndIntake() {
     }
 
     pros::screen::print(TEXT_MEDIUM, 7, "this->cycleState: %d", this->cycleState); 
-
-    // if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-    //     expandAutonRemover();
-    // }
 
     //TODO: Add Power detection to figure out whether the motor is overexerting, as such stop it
 }
@@ -61,14 +58,18 @@ void thunderbird::CatapultAndIntake::runAutomaticReload() {
 }
 
 void thunderbird::CatapultAndIntake::runMatchLoadRoutine() {
-
-    thunderbird::catapultAndIntakeMotors.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
     
-    pros::screen::print(TEXT_MEDIUM, 3, "matchload"); 
     const int matchLoadSpeed = 100, sensorThreshold = 240;
     int sensorProximity = thunderbird::kickerPlatformOptical.get_proximity();
 
-    if(sensorProximity > sensorThreshold) {
+    const int rotationSensorMin = 5000, distanceSensorMax = 100;
+    bool triballIsInsideCata = (thunderbird::catapultRotationSensor.get_position() > rotationSensorMin && thunderbird::catapultCheckerDistance.get() < distanceSensorMax);
+    pros::screen::print(TEXT_MEDIUM, 4, "inside?: %d", triballIsInsideCata); 
+
+    if(sensorProximity > sensorThreshold || master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        this->spinCatapult(127);
+    } else if (triballIsInsideCata) {
+        // pros::delay(300); // TODO - Make a manual turnoff
         this->spinCatapult(127);
     } else {
         this->chargeSync();

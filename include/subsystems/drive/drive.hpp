@@ -13,7 +13,7 @@ namespace thunderbird {
             // Drive & Turn PID
             // 0.2, 0.012, 0.7, 250 = accurate w/ integral
             // 0.2, 0.0, 1.425, 250 = best
-            PID::PID_System drivePID = PID::PID_System(0, 0.2, 0.0, 1.425, 250, 50, 300, 5000);
+            PID::PID_System drivePID = PID::PID_System(0, 0.3, 0.0, 2.225, 250, 50, 300, 5000);
 
             // 0.86 of P only = accurate
             // 0.825, 0, 4.75
@@ -35,6 +35,8 @@ namespace thunderbird {
 
             float getAvgIMURotation(int numIterations, int delayBetweenIterations);
             float getAvgIMURotation();
+            
+            float getAvgMotorVelocity();
 
             //Other Utils
             void checkInversion();

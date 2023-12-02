@@ -4,7 +4,10 @@
 namespace thunderbird {
     class Wings {
 
-        bool wingsAreOpen = false;
+        bool leftWingIsOpen = false;
+        bool rightWingIsOpen = false;
+
+        bool autonRemoverIsExpanded = false;
         
         public:
         void openWings();
@@ -16,6 +19,10 @@ namespace thunderbird {
 
         void closeLeft();
         void closeRight();
+
+        // Auton Remover
+        void expandAutonRemover();
+        void retractAutonRemover();
     };
 }
 

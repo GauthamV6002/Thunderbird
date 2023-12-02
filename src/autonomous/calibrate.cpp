@@ -22,7 +22,12 @@ void thunderbird::Auton::turnPIDCalibration() {
 }
 
 void thunderbird::Auton::drivePIDCalibration() {
-    this->_drive.moveLateral(12);
+    // this->_drive.moveLateral(24);
+    // pros::delay(1000);
+    // this->_drive.moveLateral(-12);
+    // pros::delay(1000);
+    this->_drive.moveLateral(-12);
+    this->_drive.moveLateral(24);
     this->_drive.moveLateral(36);
     this->_drive.moveLateral(-48);
     this->_drive.moveLateral(6);

@@ -13,18 +13,30 @@ void thunderbird::Drive::moveLateral(double dist) {
     float targetPosition = dist * 46.29961 * (this->frontIsNormal ? 1 : -1); // dist * 300/2pi*r; which is 300 / (2.75 * 3.14159)
     //NOTE - Blue motors have 300ticks/rev
 
+    double timeSpentStalled = 0;
+
+    const double MIN_STALL_POWER = 30, MIN_STALL_VELOCITY = 4, MIN_STALL_TIME = 400;
+
+
     while(!(this->drivePID.isSettled())) {
         float error = targetPosition - this->getAvgEncoderValue();
         float power = this->drivePID.compute(error);
 
         thunderbird::driveMotors = power;
         pros::delay(10);
-		// pros::screen::print(TEXT_MEDIUM, 3, "error:  %f   |   Power: %f", error, power);
+
+        // Stall Detection
+        if(power > MIN_STALL_POWER && this->getAvgMotorVelocity() < MIN_STALL_VELOCITY) {
+            timeSpentStalled += 10;
+        } else {
+            timeSpentStalled = 0;
+        }
+
+        if(timeSpentStalled > MIN_STALL_TIME) break;
+		
     }
 
     // pros::screen::print(TEXT_MEDIUM, 5, "settled!");
-    // pros::screen::print(TEXT_MEDIUM, 5, "is settled: %d", drivePID.isSettled());
-
     thunderbird::driveMotors.brake();
     this->drivePID.resetSystem();
 
@@ -103,7 +115,7 @@ void thunderbird::Drive::moveLateralBangBang(double dist, double speed, double t
     float targetPosition = dist * 46.29961 * (this->frontIsNormal ? 1 : -1); // dist * 300/2pi*r; which is 300 / (2.75 * 3.14159)
     float error = 10000, timeSpentRunning = 0;
 
-    while(error > threshold && timeSpentRunning <= timeout) {
+    while(fabs(error) > threshold && timeSpentRunning <= timeout) {
         error = targetPosition - this->getAvgEncoderValue();
         thunderbird::driveMotors = (error > 0) ? speed : -speed;
 
@@ -136,10 +148,12 @@ void thunderbird::Drive::swingToAngleRelativeBangBang(double targetAngle, double
     float targetPosition = getAvgIMURotation() + targetAngle;
     float error = 10000, timeSpentRunning = 0;
 
-    while (error > threshold && timeSpentRunning <= timeout) {
+    while (fabs(error) > threshold && timeSpentRunning <= timeout) {
         pros::screen::print(TEXT_MEDIUM, 11, "err: %f", error); 
         error = targetPosition - this->getAvgIMURotation();
-        if(targetAngle > 0) thunderbird::leftMotors = speed;
+        if(targetAngle > 0 && speed > 0) thunderbird::leftMotors = speed;
+        else if(targetAngle > 0 && speed < 0) thunderbird::rightMotors = speed;
+        else if(targetAngle < 0 && speed < 0) thunderbird::leftMotors = speed;
         else thunderbird::rightMotors = speed;
 
         pros::delay(10);

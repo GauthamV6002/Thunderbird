@@ -25,6 +25,11 @@ namespace thunderbird {
     extern pros::Motor catapultIntakeLeft;
     extern pros::Motor_Group catapultAndIntakeMotors;
 
+    extern pros::Motor flywheel;
+    extern pros::Motor intakeLeft;
+    extern pros::Motor intakeRight;
+    extern pros::Motor_Group intakeMotors;
+
     // Pneumatics
     extern pros::ADIDigitalOut rightWing;
     extern pros::ADIDigitalOut leftWing;
@@ -32,6 +37,7 @@ namespace thunderbird {
     extern pros::ADIDigitalOut autonRemover;
 
     extern pros::ADIDigitalOut blocker;
+    extern pros::ADIDigitalOut flywheelLift;
 
     // Sensors
     extern pros::Imu IMU1;
@@ -42,6 +48,7 @@ namespace thunderbird {
 
     extern pros::Distance backSideDistanceSensor;
     extern pros::Distance intakeChecker;
+    extern pros::Distance catapultCheckerDistance;
 }
 
 #endif

@@ -48,6 +48,8 @@
 #include "subsystems/wings/wings.hpp"
 #include "subsystems/blocker/blocker.hpp"
 #include "subsystems/catapultAndIntake/catapultAndIntake.hpp"
+#include "subsystems/flywheel/flywheel.hpp"
+#include "subsystems/intake/intake.hpp"
 #include "subsystems/elevation/elevation.hpp"
 
 // Auton

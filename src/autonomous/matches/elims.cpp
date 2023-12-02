@@ -6,9 +6,9 @@ void thunderbird::Auton::goalSideElims() {
 
     //SECTION - Extend Intake by lowering cata // Open left wing to push triball
     this->_wings.openLeft();
-    this->_catapultAndIntake.spinCatapult(127);
+    // this->_catapultAndIntake.spinCatapult(127);
     pros::delay(400);
-    this->_catapultAndIntake.spinCatapult(0);
+    // this->_catapultAndIntake.spinCatapult(0);
     this->_wings.closeLeft();
 
     this->_drive.moveLateral(57); // OLD
@@ -23,13 +23,13 @@ void thunderbird::Auton::goalSideElims() {
     
 
     // SECTION - Intake, swing, and align **
-    this->_catapultAndIntake.intakeForward(127);
+    // this->_catapultAndIntake.intakeForward(127);
     thunderbird::leftMotors = -127;
     pros::delay(600); //TODO - Adjust
     thunderbird::driveMotors = -127;
     pros::delay(200); //TODO - Adjust
     thunderbird::driveMotors = 0;
-    this->_catapultAndIntake.intakeForward(0);
+    // this->_catapultAndIntake.intakeForward(0);
     // this->_catapultAndIntake.intakeFully();
 
     // SECTION - Put both triballs in
@@ -45,7 +45,7 @@ void thunderbird::Auton::goalSideElims() {
 
     // SECTION - Get the third triball & deposit it
     this->_drive.turnToAngleRelative(142.0);
-    this->_catapultAndIntake.intakeForward(127);
+    // this->_catapultAndIntake.intakeForward(127);
     this->_drive.moveLateral(32.00);
     this->_drive.moveLateral(-20.5); // Come back a bit
     this->_drive.turnToAngleRelative(-150); // Turn towards goal

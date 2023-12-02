@@ -6,7 +6,7 @@
 // Inversion checker
 void thunderbird::Drive::checkInversion() {
     // Check inversion control
-	if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) && !master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+	if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN) && !master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 		this->inverted = !this->inverted;
 	}
 }
@@ -51,6 +51,10 @@ float thunderbird::Drive::getAvgEncoderValue(int numIterations, int delayBetween
 
 float thunderbird::Drive::getAvgEncoderValue() {
     return (thunderbird::frontLeft.get_position() + thunderbird::middleLeft.get_position() + thunderbird::backLeft.get_position() + thunderbird::frontRight.get_position() + thunderbird::middleRight.get_position() + thunderbird::backRight.get_position()) / 6.0;
+}
+
+float thunderbird::Drive::getAvgMotorVelocity() {
+    return (thunderbird::frontLeft.get_actual_velocity() + thunderbird::middleLeft.get_actual_velocity() + thunderbird::backLeft.get_actual_velocity() + thunderbird::frontRight.get_actual_velocity() + thunderbird::middleRight.get_actual_velocity() + thunderbird::backRight.get_actual_velocity()) / 6.0;
 }
 
 float thunderbird::Drive::getAvgIMURotation(int numIterations, int delayBetweenIterations) {
