@@ -1,76 +1,122 @@
 #include "autonomous/autonomous.hpp"
 #include "main.h"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
 #include "subsystems/catapultAndIntake/catapultAndIntake.hpp"
-#include "subsystems/flywheel/flywheel.hpp"
 #include "subsystems/drive/drive.hpp"
 
-// TODO: DONT USE TURNRELATIVE! TURN ABSOLUTE REMOVES COMPOUNDING ERROR
-// TODO: FIX PLANNER WEBSITE TO USE TURN ABSOLUTE
-
-void runMatchLoading(int numTriballs, thunderbird::CatapultAndIntake _catapultAndIntake) {
-    const int matchLoadSpeed = 127, sensorThreshold = 240;
-
-    int triballCounter = 0;
-    bool hasIncremented = false;
-
-    const int rotationSensorMin = 5000, distanceSensorMax = 100;
+void runMatchLoading(thunderbird::Kicker _kicker) {
 
     double timeSpentRunning = 0;
-    double timeSpentStalled = 0, stallThreshold = 100, minStallTime = 1500;
 
-    while(triballCounter <= numTriballs) {
+    while(true) {
 
-        bool triballIsInsideCata = (thunderbird::catapultRotationSensor.get_position() > rotationSensorMin && thunderbird::catapultCheckerDistance.get() < distanceSensorMax);
-
-        if(thunderbird::kickerPlatformOptical.get_proximity() > sensorThreshold) {
-            _catapultAndIntake.spinCatapult(matchLoadSpeed);
-            if(!hasIncremented) {
-                triballCounter++;
-                hasIncremented = true;
-            }
-        }  else if (triballIsInsideCata) {
-            _catapultAndIntake.spinCatapult(127);
-        } else {
-            _catapultAndIntake.chargeSync();
-            hasIncremented = false;
-            if(thunderbird::catapultRotationSensor.get_velocity() < stallThreshold) {
-                timeSpentStalled += 10;
-            } else {
-                timeSpentStalled = 0;
-            }
-
-            // Break out of stall
-            if(timeSpentStalled > minStallTime) {
-                _catapultAndIntake.spinCatapult(-127);
-                pros::delay(400);
-                timeSpentRunning += 400;
-                _catapultAndIntake.spinCatapult(127);
-                pros::delay(400);
-                timeSpentRunning += 400;
-            }
-        }
+        _kicker.chargeSync();
 
         timeSpentRunning += 10;
-        pros::screen::print(pros::E_TEXT_MEDIUM, 4, "timeSpentRunning: %f", timeSpentRunning); 
-        if(timeSpentRunning > 35000) break;
+        if(timeSpentRunning > 35 * 1000) break;
         pros::delay(10);
     }
 }
 
 void thunderbird::Auton::skillsRoutine() {
 
-    // SECTION - Release Intake & 
-    this->_flywheel.spinForward(127*0.8);
-    this->_flywheel.raiseFlywheelLift();
-    pros::delay(750);
-    this->_flywheel.lowerFlywheelLift();
-    pros::delay(60 * 1000);
+    // SECTION -  Align to shoot, wait 30s
+    this->_drive.moveLateral(-20);
+    // TODO: Clamp absolute turning to 0-360
+    this->_drive.turnToAngleAbsolute(-65); 
+    this->_wings.openBackRight();
 
-    // this->_drive.turnToAngleRelative(165);
-    // this->_drive.moveLateral(58.83);
-    // this->_drive.turnToAngleRelative(68);
-    // this->_wings.openWings();
-    // pros::delay(400);
-    // thunderbird::driveMotors = 127;
+    runMatchLoading(_kicker);
+    this->_wings.closeBackRight();
+    kickerMotors = 127;
+    pros::delay(150);
+    kickerMotors = 0;
+
+
+    // SECTION - Align with the tunnel, and go to the other side
+    this->_drive.turnToAngleAbsolute(0); 
+    this->_drive.moveLateral(22);
+    this->_drive.turnToAngleAbsolute(-40);
+
+    // SECTION - Go over to the other side and to the front of the goal
+    this->_drive.moveLateral(80);
+    this->_drive.turnToAngleAbsolute(-135);
+    this->_drive.moveLateral(24);
+    this->_drive.turnToAngleRelative(-35);
+    this->_drive.moveLateral(40);
+    this->_drive.turnToAngleAbsolute(-220);
+
+    // SECTION - Make a push into the goal, close wings
+    this->_wings.openBackWings();
+    thunderbird::driveMotors = -127;
+    pros::delay(1000);
+    this->_wings.closeBackWings();
+    pros::delay(300);
+
+    // SECTION - Go back and realign with the barrier
+    thunderbird::driveMotors = 80;
+    pros::delay(1000);
+
+    // SECTION - Move fwd a bit, turn and get in position for an angled push
+    this->_drive.moveLateral(-4);
+    this->_drive.turnToAngleAbsolute(45);
+
+    this->_drive.moveLateral(-32);
+    this->_drive.turnToAngleAbsolute(0);
+
+    // SECTION - Go fwd, then make a swing push
+
+    this->_wings.openFrontWings();
+    pros::delay(200);
+    this->_drive.moveLateral(24);
+
+    // Do a swing into the goal
+    thunderbird::leftMotors = 64;
+    thunderbird::rightMotors = 127;
+    pros::delay(1000);
+
+    this->_wings.closeFrontWings();
+    pros::delay(300);
+
+    // SECTION - Ram into the side for to align
+    this->_drive.moveLateral(-15);
+    this->_drive.turnToAngleAbsolute(-135);
+
+    thunderbird::driveMotors = -100;
+    pros::delay(1800);
+
+    // SECTION - Turn and make a push into the side
+    this->_drive.moveLateral(8);
+    this->_drive.turnToAngleAbsolute(90);
+    this->_drive.moveLateral(-28);
+    //TODO: Reduce header timeout?
+
+    // SECTION - Go back and forth 4x 
+
+    this->_drive.turnToAngleAbsolute(40);
+    thunderbird::driveMotors = -127;
+    pros::delay(800);
+    this->_drive.moveLateral(12);
+    this->_drive.turnToAngleAbsolute(45);
+
+    thunderbird::driveMotors = -127;
+    pros::delay(800);
+    this->_drive.moveLateral(12);
+    this->_drive.turnToAngleAbsolute(45);
+
+
+    thunderbird::driveMotors = -127;
+    pros::delay(800);
+    this->_drive.moveLateral(12);
+    this->_drive.turnToAngleAbsolute(45);
+
+
+    thunderbird::driveMotors = -127;
+    pros::delay(800);
+    this->_drive.moveLateral(12);
+    this->_drive.turnToAngleAbsolute(45);
+
+
+    
 }

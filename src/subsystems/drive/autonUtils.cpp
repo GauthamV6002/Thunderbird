@@ -22,17 +22,19 @@ void thunderbird::Drive::moveLateral(double dist) {
         float error = targetPosition - this->getAvgEncoderValue();
         float power = this->drivePID.compute(error);
 
+        pros::screen::print(TEXT_MEDIUM, 5, "power: %f", power); 
+
         thunderbird::driveMotors = power;
         pros::delay(10);
 
-        // Stall Detection
-        if(power > MIN_STALL_POWER && this->getAvgMotorVelocity() < MIN_STALL_VELOCITY) {
-            timeSpentStalled += 10;
-        } else {
-            timeSpentStalled = 0;
-        }
+        // // Stall Detection
+        // if(power > MIN_STALL_POWER && this->getAvgMotorVelocity() < MIN_STALL_VELOCITY) {
+        //     timeSpentStalled += 10;
+        // } else {
+        //     timeSpentStalled = 0;
+        // }
 
-        if(timeSpentStalled > MIN_STALL_TIME) break;
+        // if(timeSpentStalled > MIN_STALL_TIME) break;
 		
     }
 
@@ -66,14 +68,22 @@ void thunderbird::Drive::turnToAngleRelative(double targetAngle) {
 }
 
 
-void thunderbird::Drive::turnToAngleAbsolute(double targetAngle) {
+void thunderbird::Drive::turnToAngleAbsolute(double targetAngle, double maxSpeed) {
 
     while(!(this->turnPID.isSettled())) {
         float error = targetAngle - this->getAvgIMURotation();
         float power = this->turnPID.compute(error);
 
-        thunderbird::leftMotors = power;
-        thunderbird::rightMotors = -power;
+        if(fabs(power) > fabs(maxSpeed)){
+            thunderbird::leftMotors = (power > 0) ? maxSpeed : -maxSpeed;
+            thunderbird::rightMotors = (power > 0) ? -maxSpeed : maxSpeed;
+        } else {
+            thunderbird::leftMotors = power;
+            thunderbird::rightMotors = -power;
+        }
+
+        // thunderbird::leftMotors = (fabs(power) > fabs(maxSpeed)) ? maxSpeed : power;
+        // thunderbird::rightMotors = (fabs(power) > fabs(maxSpeed)) ? -maxSpeed : -power;
         pros::delay(10);
 		pros::screen::print(TEXT_MEDIUM, 3, "Error:  %f   |   Power: %f", error, power);
     }

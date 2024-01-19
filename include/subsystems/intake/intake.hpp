@@ -12,6 +12,9 @@ namespace thunderbird {
             void intakeIn(int power);
             void runIntake();
 
+            // Auton Macros
+            void outtake(int time = 600, int power = 127);
+
     };
 }
 

@@ -6,23 +6,26 @@ namespace thunderbird {
 
         bool leftWingIsOpen = false;
         bool rightWingIsOpen = false;
-
-        bool autonRemoverIsExpanded = false;
         
         public:
-        void openWings();
-        void closeWings();
         void runWings();
 
-        void openLeft();
-        void openRight();
+        void openFrontWings();
+        void closeFrontWings();
 
-        void closeLeft();
-        void closeRight();
+        void openFrontLeft();
+        void openFrontRight();
+        void closeFrontLeft();
+        void closeFrontRight();
 
-        // Auton Remover
-        void expandAutonRemover();
-        void retractAutonRemover();
+        void openBackWings();
+        void closeBackWings();
+
+        void openBackLeft();
+        void openBackRight();
+        void closeBackLeft();
+        void closeBackRight();
+
     };
 }
 

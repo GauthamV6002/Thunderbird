@@ -7,7 +7,7 @@
 #include "subsystems/blocker/blocker.hpp"
 #include "subsystems/catapultAndIntake/catapultAndIntake.hpp"
 #include "subsystems/elevation/elevation.hpp"
-#include "subsystems/flywheel/flywheel.hpp"
+#include "subsystems/kicker/kicker.hpp"
 #include "subsystems/intake/intake.hpp"
 
 namespace thunderbird {
@@ -15,13 +15,13 @@ namespace thunderbird {
         public:
         Drive _drive;
         // CatapultAndIntake _catapultAndIntake;
-        Flywheel _flywheel;
+        Kicker _kicker;
         Intake _intake;
         Wings _wings;
         Elevation _elevation;
         Blocker _blocker;
 
-        Auton(Drive _drive, Flywheel _flywheel, Intake _intake, Wings _wings, Elevation _elevation, Blocker _blocker);
+        Auton(Drive _drive, Kicker _kicker, Intake _intake, Wings _wings, Elevation _elevation, Blocker _blocker);
 
         // Calibration Functions
         void plannerCalibration();
@@ -40,6 +40,7 @@ namespace thunderbird {
 
         // Skills
         void skillsRoutine();
+        void skillsSetup();
 
         // Utils & Macros
         void outtakeAndDeposit(int power = 80, int moveDelay = 200, int time = 500, int distBack = 12);

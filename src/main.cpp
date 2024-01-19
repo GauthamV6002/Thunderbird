@@ -1,16 +1,15 @@
 #include "main.h"
 
-// Subsystems
-thunderbird::Drive _drive = thunderbird::Drive(); //_name convention to represent objects
-// thunderbird::CatapultAndIntake _catapultAndIntake = thunderbird::CatapultAndIntake();
+// Subsystems (_name convention to represent objects)
+thunderbird::Drive _drive = thunderbird::Drive();
 thunderbird::Intake _intake = thunderbird::Intake();
-thunderbird::Flywheel _flywheel = thunderbird::Flywheel();
+thunderbird::Kicker _kicker = thunderbird::Kicker();
 thunderbird::Wings _wings = thunderbird::Wings();
 thunderbird::Elevation _elevation = thunderbird::Elevation();
 thunderbird::Blocker _blocker = thunderbird::Blocker();
 
 // Autonomous System
-thunderbird::Auton autons = thunderbird::Auton(_drive, _flywheel, _intake, _wings, _elevation, _blocker);
+thunderbird::Auton autons = thunderbird::Auton(_drive, _kicker, _intake, _wings, _elevation, _blocker);
 
 void disabled() {}
 
@@ -24,6 +23,7 @@ void competition_initialize() {
 void initialize() {
 	// Configs
 	_intake.setIntakeConfig();
+	thunderbird::catapultRotationSensor.reset_position();
 	thunderbird::driveMotors.tare_position();
 
 	thunderbird::IMU1.reset(false);
@@ -31,57 +31,37 @@ void initialize() {
 }
 
 void autonomous() {
-
-	// pros::delay(2000); //TODO: DELETE
 	// autons.goalSideAWP();
-	
-	// autons.shootSideAWPOnly();
-	// autons.goalSideSafe();
-	autons.skillsRoutine();
-	// pros::delay(2000);
 	// autons.shootSideSafe();
-	// autons.goalSideAWP();
+	autons.skillsRoutine();
 }
 
 
 
 void opcontrol() {
 
-	/*NOTE - Control Scheme 
-	
-		R1: Intake IN
-		R2: Intake OUT / Fire Cata
-
-		L1: Toggle Wings
-		L2: Toggle Intake Lift
-
-		D_PAD X: Switch to Match Load Routine for Cata
-		D_PAD DOWN: Switch to Automatic Action for Cata
-
-		D_PAD B: Release Elevation Mech
-		D_PAD A: Toggle Blocker
-		D_PAD Y: Toggle Auton Remover
-	
-	*/
+	// SKILLS ONLY
+	_drive.moveLateral(-20);
+    // TODO: Clamp absolute turning to 0-360
+    _drive.turnToAngleAbsolute(-65); 
+    _wings.openBackWings();
 
     while(true) {
 
         // Main loop functions
-        _drive.arcade(true);
+        _drive.arcade(true, false) ;
+		// _drive.curvatureDrive(false);
 		// _drive.joystickL();
 
-        // _catapultAndIntake.runCatapultAndIntake();
 		_intake.runIntake();
-		_flywheel.runFlywheel();
+		_kicker.runKicker();
+		// _flywheel.runFlywheel();
 
         _wings.runWings();
-		_blocker.runBlocker();
+		// _blocker.runBlocker();
 		_elevation.runElevation();
 
-		// pros::screen::print(TEXT_MEDIUM, 1, "rotation sensor: %d", thunderbird::catapultRotationSensor.get_angle()); 
-		// pros::screen::print(TEXT_MEDIUM, 3, "dist sensor: %d", thunderbird::catapultCheckerDistance.get()); 
-
-        pros::delay(10);
+        pros::delay(5);
     }
 }
 

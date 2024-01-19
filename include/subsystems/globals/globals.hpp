@@ -21,9 +21,9 @@ namespace thunderbird {
     extern pros::Motor_Group driveMotors;
 
     // Flywheel/Intake
-    extern pros::Motor catapultIntakeRight;
-    extern pros::Motor catapultIntakeLeft;
-    extern pros::Motor_Group catapultAndIntakeMotors;
+    extern pros::Motor kickerRightMotor;
+    extern pros::Motor kickerLeftMotor;
+    extern pros::Motor_Group kickerMotors;
 
     extern pros::Motor flywheel;
     extern pros::Motor intakeLeft;
@@ -31,13 +31,13 @@ namespace thunderbird {
     extern pros::Motor_Group intakeMotors;
 
     // Pneumatics
-    extern pros::ADIDigitalOut rightWing;
-    extern pros::ADIDigitalOut leftWing;
-    extern pros::ADIDigitalOut elevationRelease;
-    extern pros::ADIDigitalOut autonRemover;
+    extern pros::ADIDigitalOut leftFrontWing;
+    extern pros::ADIDigitalOut rightFrontWing;
 
-    extern pros::ADIDigitalOut blocker;
-    extern pros::ADIDigitalOut flywheelLift;
+    extern pros::ADIDigitalOut leftBackWing;
+    extern pros::ADIDigitalOut rightBackWing;
+ 
+    extern pros::ADIDigitalOut elevation;
 
     // Sensors
     extern pros::Imu IMU1;

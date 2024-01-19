@@ -37,6 +37,17 @@ void thunderbird::Drive::circleToSquare(double u, double v, double& x, double& y
     y = 0.5 * sqrt(fabs(termy1)) - 0.5 * sqrt(fabs(termy2));
 }
 
+// Left curve function
+double thunderbird::Drive::curveRemap(double x, double curveScale) {
+  if (curveScale != 0) {
+    // if (CURVE_TYPE)
+    return (powf(2.718, -(curveScale / 10)) + powf(2.718, (fabs(x) - 127) / 10) * (1 - powf(2.718, -(curveScale / 10)))) * x;
+    // else
+    // return powf(2.718, ((abs(x)-127)*RIGHT_CURVE_SCALE)/100)*x;
+  }
+  return x;
+}
+
 float thunderbird::Drive::getAvgEncoderValue(int numIterations, int delayBetweenIterations) {
     
     float sum = 0;
@@ -68,8 +79,11 @@ float thunderbird::Drive::getAvgIMURotation(int numIterations, int delayBetweenI
     return sum / (2*numIterations);
 }
 
+// TODO: Make the code default to using 1 IMU in case one fails
 float thunderbird::Drive::getAvgIMURotation() {
-    return ((thunderbird::IMU1.get_rotation() + thunderbird::IMU2.get_rotation()) / 2);
+    if(thunderbird::IMU1.get_rotation() == PROS_ERR_F) return thunderbird::IMU2.get_rotation();
+    if(thunderbird::IMU2.get_rotation() == PROS_ERR_F) return thunderbird::IMU1.get_rotation();
+    else return ((thunderbird::IMU1.get_rotation() + thunderbird::IMU2.get_rotation()) / 2);
 }
 
 void thunderbird::Drive::reverseFront() {

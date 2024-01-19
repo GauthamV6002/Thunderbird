@@ -4,9 +4,14 @@
 namespace thunderbird {
     class Elevation {
         public:
+
+        bool elevationIsExpanded = false;
         
-        void releaseElevationMechanism();
+        void expandElevationMechanism();
         void retractElevationPiston();
+        void toggleElevationMechanism();
+
+
         void runElevation();
     };
 }

@@ -15,3 +15,10 @@ void thunderbird::Intake::runIntake() {
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) intakeIn(-127);
     else intakeIn(0);
 }
+
+void thunderbird::Intake::outtake(int time, int power) {
+    intakeIn(-power);
+    pros::delay(time);
+    intakeIn(0);
+
+}
